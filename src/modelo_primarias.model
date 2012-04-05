@@ -1,8 +1,0 @@
-model {
-    for (i in 1:no.escuelas){
-        p.1[i] ~ dbeta(a,b)
-        no.bueno[i] ~ dbinom(p.1[i], no.eval[i])
-    }
-    a ~ dgamma(0.01, 0.01)
-    b ~ dgamma(0.01, 0.01)
-}

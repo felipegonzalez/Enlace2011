@@ -1,16 +1,22 @@
 model {
     for (i in 1:no.escuelas){
-		no.bueno.esp[i] ~ dbinom(p.bound[i], no.eval[i])
-		p.bound[i] <- max(0, min(1, p[i]))
-		logit(p[i]) <- Xbeta[i]
-        Xbeta[i] ~ dnorm(Xbeta.0[i], tau)
+		no.bueno.esp[i] ~ dbinom(p.esp.bound[i], no.eval[i])
+		no.bueno.mat[i] ~ dbinom(p.mat.bound[i], no.eval[i])
+		p.esp.bound[i] <- max(0, min(1, p.esp[i]))
+		p.mat.bound[i] <- max(0, min(1, p.mat[i]))
+		logit(p.esp[i]) <- Xbeta.esp[i]
+		logit(p.mat[i]) <- Xbeta.mat[i]
+        Xbeta.esp[i] ~ dnorm(Xbeta.0[i], tau.esp)
+		Xbeta.mat[i] ~ dnrom(Xbeta.0[i], tau.mat)
 		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]]
 	}
 	a.adj <- a.0 + mean(a.tipo[]) + mean(a.marg[])
 	a.0 ~ dnorm(0, 0.0001)
-	sigma ~ dunif(0.001, 1000)
-	tau <- pow(sigma, -2)
-	
+	sigma.mat ~ dunif(0.001, 1000)
+	sigma.esp ~ dunif(0.001, 1000)
+	tau.mat <- pow(sigma, -2)
+	tau.esp <- pow(sigma, -2)
+
 	for(t in 1:n.tipo){
 		a.tipo[t] ~ dnorm(0, tau.tipo)
 		a.tipo.adj[t] <- a.tipo[t] - mean(a.tipo[])
