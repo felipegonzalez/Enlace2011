@@ -1,0 +1,54 @@
+library(ProjectTemplate)
+load.project()
+
+##Temp
+#primarias.s <- primarias[ sample(1:nrow(primarias), 1000), ] 
+
+primarias.s <- subset(primarias, tot.primaria > 30 & TIPO_ESCUELA!="CONAFE")
+primarias.s <- primarias.s[sample(1:nrow(primarias.s), 10000),]
+
+no.escuelas <- nrow(primarias.s)
+no.bueno <- primarias.s$no.bueno
+no.eval <- primarias.s$tot.primaria
+
+marg <- as.numeric(primarias.s$marginación)
+tipo <- as.numeric(primarias.s$tipo)
+n.marg <- max(marg)
+n.tipo <- max(tipo, na.rm =TRUE)
+
+x.lavadora <- as.numeric(scale(primarias.s$p_VPH_LAVAD))
+x.piso.tierra <- as.numeric(scale(primarias.s$p_VPH_PISODT))
+x.autom <- as.numeric(scale(primarias.s$p_VPH_AUTOM))
+x.telef <- scale(primarias.s$p_VPH_TELEF)
+x.celular <- as.numeric(scale(primarias.s$p_VPH_CEL))
+x.tv <- scale(primarias.s$p_VPH_TV)
+x.radio <- scale(primarias.s$p_VPH_RADIO)
+x.internet <- as.numeric(scale(primarias.s$p_VPH_INTER))
+x.pc <- as.numeric(scale(primarias.s$p_VPH_PC))
+
+
+jags.inits <- function(){
+     list('a.marg'=rep(0,n.marg), 'a.tipo'=rep(0,n.tipo), 
+    # 'tau.marg'=runif(1),
+    # 'tau.tipo'=runif(1),
+     'sigma'=runif(1)
+     )
+ }
+
+jags.data <- c('no.bueno', 'no.eval', 'no.escuelas', 'tipo', 'marg', 'n.marg',
+    'n.tipo','x.lavadora','x.celular','x.internet','x.pc','x.piso.tierra',
+    'x.autom')
+
+jags.params <- c('a.marg.adj', 'a.tipo.adj', 'p.bound', 'a.adj', 'sigma','b.lav','b.cel',
+    'b.int','b.pc','b.tierra','b.autom','tau')
+
+jags.fit <- jags(model.file = './src/modelo_logit.model', 
+    data = jags.data, inits = jags.inits, 
+    parameters.to.save = jags.params,
+    n.chains = 2, n.burnin=1000, n.thin = 5, DIC = FALSE,
+    n.iter = 10000)
+
+medias.escuelas <- jags.fit$BUGSoutput$mean$p.bound  
+hist(medias.escuelas)
+plot(jags.fit)
+traceplot(jags.fit$BUGSoutput)

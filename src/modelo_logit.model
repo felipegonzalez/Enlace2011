@@ -1,0 +1,36 @@
+model {
+    for (i in 1:no.escuelas){
+		no.bueno[i] ~ dbinom(p.bound[i], no.eval[i])
+		p.bound[i] <- max(0, min(1, p[i]))
+		logit(p[i]) <- Xbeta[i]
+        Xbeta[i] ~ dnorm(Xbeta.0[i], tau)
+		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]] + 
+		exp(b.lav)*x.lavadora[i] + exp(b.cel)*x.celular[i] + exp(b.int)*x.internet[i] + 
+		exp(b.pc)*x.pc[i] + exp(b.tierra)*x.piso.tierra[i] + exp(b.autom)*x.autom[i]
+	}
+	a.adj <- a.0 + mean(a.marg[]) + mean(a.tipo[]) + mean(a.marg[])
+	a.0 ~ dnorm(0, 0.0001)
+	sigma ~ dunif(0.001, 1000)
+	tau <- pow(sigma, -2)
+	
+	for(t in 1:n.tipo){
+		a.tipo[t] ~ dnorm(0, tau.tipo)
+		a.tipo.adj[t] <- a.tipo[t] - mean(a.tipo[])
+	}
+	tau.tipo <- pow(sigma.tipo, -2)
+	sigma.tipo ~ dunif(0.001, 1000)
+	
+	for(m in 1:n.marg){
+		a.marg[m] ~ dnorm(0, tau.marg)
+		a.marg.adj[m] <- a.marg[m] - mean(a.marg[])
+	}
+	tau.marg <- pow(sigma.marg, -2)
+	sigma.marg ~ dunif(0.001, 1000)	
+	b.lav ~ dnorm(-2,0.001)
+	b.cel ~ dnorm(-2,0.001)
+	b.int ~ dnorm(-2,0.001)
+	b.pc ~ dnorm(-2,0.001)
+	b.tierra ~ dnorm(-2,0.001)
+	b.autom ~ dnorm(-2,0.001)
+	
+}
