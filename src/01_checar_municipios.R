@@ -88,7 +88,7 @@ primarias$mun.corregido <- dat.muns$nombre.corregido
 
 primarias$NOM_ENT <- primarias$ENTIDAD
 primarias$ENTIDAD <- primarias$CVE_ENT
-primarias.x <- join(primarias, tab.mun.completa, by=c("ENTIDAD", "mun.corregido"))
+primarias.x <- join(primarias, tab.mun.completa, by=c("CVE_ENT", "mun.corregido"))
 nrow(primarias.x)
 head(primarias.x)
 cache("primarias.x")
