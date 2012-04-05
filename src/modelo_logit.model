@@ -4,11 +4,9 @@ model {
 		p.bound[i] <- max(0, min(1, p[i]))
 		logit(p[i]) <- Xbeta[i]
         Xbeta[i] ~ dnorm(Xbeta.0[i], tau)
-		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]] + 
-		exp(b.lav)*x.lavadora[i] + exp(b.cel)*x.celular[i] + exp(b.int)*x.internet[i] + 
-		exp(b.pc)*x.pc[i] + exp(b.tierra)*x.piso.tierra[i] + exp(b.autom)*x.autom[i]
+		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]]
 	}
-	a.adj <- a.0 + mean(a.marg[]) + mean(a.tipo[]) + mean(a.marg[])
+	a.adj <- a.0 + mean(a.tipo[]) + mean(a.marg[])
 	a.0 ~ dnorm(0, 0.0001)
 	sigma ~ dunif(0.001, 1000)
 	tau <- pow(sigma, -2)
@@ -25,12 +23,5 @@ model {
 		a.marg.adj[m] <- a.marg[m] - mean(a.marg[])
 	}
 	tau.marg <- pow(sigma.marg, -2)
-	sigma.marg ~ dunif(0.001, 1000)	
-	b.lav ~ dnorm(-2,0.001)
-	b.cel ~ dnorm(-2,0.001)
-	b.int ~ dnorm(-2,0.001)
-	b.pc ~ dnorm(-2,0.001)
-	b.tierra ~ dnorm(-2,0.001)
-	b.autom ~ dnorm(-2,0.001)
-	
+	sigma.marg ~ dunif(0.001, 1000)		
 }
