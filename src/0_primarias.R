@@ -11,7 +11,7 @@ primarias$tot.primaria <- (primarias$ALUMNEVAL_6G - primarias$ALUMRESPOCONF_6G) 
     (primarias$ALUMNEVAL_4G - primarias$ALUMRESPOCONF_4G) +
     (primarias$ALUMNEVAL_3G - primarias$ALUMRESPOCONF_3G)
 
-primarias$no.bueno <- floor((primarias$ALUMNEVAL_6G - primarias$ALUMRESPOCONF_6G)*
+primarias$no.bueno.esp <- floor((primarias$ALUMNEVAL_6G - primarias$ALUMRESPOCONF_6G)*
     (primarias$PORALUM_ESP_6G_EXCEL+primarias$PORALUM_ESP_6G_BUENO )/100) +
     floor((primarias$ALUMNEVAL_5G - primarias$ALUMRESPOCONF_5G) *
         ( primarias$PORALUM_ESP_5G_EXCEL+primarias$PORALUM_ESP_5G_BUENO )/100)+
@@ -20,7 +20,18 @@ primarias$no.bueno <- floor((primarias$ALUMNEVAL_6G - primarias$ALUMRESPOCONF_6G
     floor((primarias$ALUMNEVAL_3G - primarias$ALUMRESPOCONF_3G) *
         ( primarias$PORALUM_ESP_3G_EXCEL+primarias$PORALUM_ESP_3G_BUENO )/100)
 
-primarias$no.malo <- primarias$tot.primaria - primarias$no.bueno
+
+primarias$no.bueno.mate <- floor((primarias$ALUMNEVAL_6G - primarias$ALUMRESPOCONF_6G)*
+    (primarias$PORALUM_MAT_6G_EXCEL+primarias$PORALUM_MAT_6G_BUENO )/100) +
+    floor((primarias$ALUMNEVAL_5G - primarias$ALUMRESPOCONF_5G) *
+        ( primarias$PORALUM_MAT_5G_EXCEL+primarias$PORALUM_MAT_5G_BUENO )/100)+
+    floor((primarias$ALUMNEVAL_4G - primarias$ALUMRESPOCONF_4G) *
+        ( primarias$PORALUM_MAT_4G_EXCEL+primarias$PORALUM_MAT_4G_BUENO )/100)+
+    floor((primarias$ALUMNEVAL_3G - primarias$ALUMRESPOCONF_3G) *
+        ( primarias$PORALUM_MAT_3G_EXCEL+primarias$PORALUM_MAT_3G_BUENO )/100)
+
+primarias$no.malo.esp <- primarias$tot.primaria - primarias$no.bueno.esp
+primarias$no.malo.mat <- primarias$tot.primaria - primarias$no.bueno.mat
 
 primarias$ESCUELA.num <- factor(1:nrow(primarias))
 primarias$marginación <- factor(str_trim(as.character(primarias$GRAD_MARG)),

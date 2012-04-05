@@ -1,6 +1,6 @@
 model {
     for (i in 1:no.escuelas){
-		no.bueno[i] ~ dbinom(p.bound[i], no.eval[i])
+		no.bueno.esp[i] ~ dbinom(p.bound[i], no.eval[i])
 		p.bound[i] <- max(0, min(1, p[i]))
 		logit(p[i]) <- Xbeta[i]
         Xbeta[i] ~ dnorm(Xbeta.0[i], tau)

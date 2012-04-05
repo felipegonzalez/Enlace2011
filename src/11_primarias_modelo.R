@@ -8,7 +8,8 @@ primarias.s <- subset(primarias, tot.primaria > 30 & TIPO_ESCUELA!="CONAFE")
 primarias.s <- primarias.s[sample(1:nrow(primarias.s), 10000),]
 
 no.escuelas <- nrow(primarias.s)
-no.bueno <- primarias.s$no.bueno
+no.bueno.esp <- primarias.s$no.bueno.esp
+no.bueno.mat <- primarias.s$no.bueno.mat
 no.eval <- primarias.s$tot.primaria
 
 marg <- as.numeric(primarias.s$marginación)
@@ -35,7 +36,7 @@ jags.inits <- function(){
      )
  }
 
-jags.data <- c('no.bueno', 'no.eval', 'no.escuelas', 'tipo', 'marg', 'n.marg',
+jags.data <- c('no.bueno.esp', 'no.bueno.mat', 'no.eval', 'no.escuelas', 'tipo', 'marg', 'n.marg',
     'n.tipo','x.lavadora','x.celular','x.internet','x.pc','x.piso.tierra',
     'x.autom')
 
