@@ -96,7 +96,7 @@ cache("primarias.x")
 # ================
 # = Diagnósticos =
 # ================
-primarias.x$faltante.internet <- !is.na(primarias.x$p_VPH_INTER)
-#Ojo: falta el de zapotitlan del rio en oaxaca - pero hay una sola escuela
-table(primarias.x$faltante.internet)
-sub.temp <- subset(primarias.x, faltante.internet==FALSE)
+# primarias.x$faltante.internet <- !is.na(primarias.x$p_VPH_INTER)
+# #Ojo: falta el de zapotitlan del rio en oaxaca - pero hay una sola escuela
+# table(primarias.x$faltante.internet)
+# sub.temp <- subset(primarias.x, faltante.internet==FALSE)
