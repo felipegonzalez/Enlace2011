@@ -7,10 +7,13 @@ svg(file = "./graphs/plot_jagsfit.svg")
 plot(jags.fit)
 dev.off()
 
+#traceplot(jags.fit)
 
 medias.post <- jags.fit$BUGSoutput$mean
-
 comp.medias <- data.frame(español = medias.post$p.esp.bound,
         mate = medias.post$p.mat.bound)
-        
-ggplot(comp.medias, aes(x = español, y = mate)) + geom_point()
+
+svg(file = './graphs/comp_mate_español_medias.svg')        
+ggplot(comp.medias, aes(x = español, y = mate)) + geom_point() +
+    geom_abline(xintercept = 0, slope = 1, colour = 'red')
+dev.off()

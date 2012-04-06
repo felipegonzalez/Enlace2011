@@ -7,15 +7,16 @@ model {
 		logit(p.esp[i]) <- Xbeta.esp[i]
 		logit(p.mat[i]) <- Xbeta.mat[i]
         Xbeta.esp[i] ~ dnorm(Xbeta.0[i], tau.esp)
-		Xbeta.mat[i] ~ dnrom(Xbeta.0[i], tau.mat)
-		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]]
+		Xbeta.mat[i] ~ dnorm(Xbeta.0[i], tau.mat)
+		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]] + a.pc*pc.cent[i] + a.internet*internet.cent[i] +
+			a.lavadora*lavadora.cent[i] + a.celular*celular.cent[i]
 	}
 	a.adj <- a.0 + mean(a.tipo[]) + mean(a.marg[])
 	a.0 ~ dnorm(0, 0.0001)
 	sigma.mat ~ dunif(0.001, 1000)
 	sigma.esp ~ dunif(0.001, 1000)
-	tau.mat <- pow(sigma, -2)
-	tau.esp <- pow(sigma, -2)
+	tau.mat <- pow(sigma.mat, -2)
+	tau.esp <- pow(sigma.esp, -2)
 
 	for(t in 1:n.tipo){
 		a.tipo[t] ~ dnorm(0, tau.tipo)
@@ -29,5 +30,10 @@ model {
 		a.marg.adj[m] <- a.marg[m] - mean(a.marg[])
 	}
 	tau.marg <- pow(sigma.marg, -2)
-	sigma.marg ~ dunif(0.001, 1000)		
+	sigma.marg ~ dunif(0.001, 1000)	
+	
+	a.pc ~ dnorm(0, 0.001)
+	a.internet ~ dnorm(0, 0.001)
+	a.lavadora ~ dnorm(0, 0.001)
+	a.celular ~ dnorm(0, 0.001)
 }

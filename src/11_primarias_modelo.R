@@ -5,7 +5,7 @@ load.project()
 #primarias.s <- primarias[ sample(1:nrow(primarias), 1000), ] 
 
 primarias.s <- subset(primarias, tot.primaria > 30 & TIPO_ESCUELA!="CONAFE")
-primarias.s <- primarias.s[sample(1:nrow(primarias.s), 1000),]
+primarias.s <- primarias.s[sample(1:nrow(primarias.s), 5000),]
 
 no.escuelas <- nrow(primarias.s)
 no.bueno.esp <- primarias.s$no.bueno.esp
@@ -28,6 +28,18 @@ x.internet <- as.numeric(scale(primarias.s$p_VPH_INTER))
 x.pc <- as.numeric(scale(primarias.s$p_VPH_PC))
 
 
+## Variables centradas por grado de marginación
+primarias.s <- ddply(primarias, c('marginación'), transform,
+    pc.cent = p_VPH_INTER - mean(p_VPH_INTER),
+    internet.cent = p_VPH_INTER - mean(p_VPH_INTER),
+    lavadora.cent = p_VPH_LAVAD - mean(p_VPH_LAVAD),
+    celular.cent = p_VPH_CEL - mean(p_VPH_CEL))
+
+pc.cent <- primarias.s$pc.cent
+internet.cent <- primarias.s$internet.cent
+lavadora.cent <- primarias.s$lavadora.cent
+celular.cent <- primarias.s$celular.cent
+
 jags.inits <- function(){
      list('a.marg'=rep(0,n.marg), 'a.tipo'=rep(0,n.tipo), 
     # 'tau.marg'=runif(1),
@@ -37,11 +49,10 @@ jags.inits <- function(){
  }
 
 jags.data <- c('no.bueno.esp', 'no.bueno.mat', 'no.eval', 'no.escuelas', 'tipo', 'marg', 'n.marg',
-    'n.tipo','x.lavadora','x.celular','x.internet','x.pc','x.piso.tierra',
-    'x.autom')
+    'n.tipo','pc.cent', 'internet.cent', 'lavadora.cent', 'celular.cent')
 
 jags.params <- c('a.marg.adj', 'a.tipo.adj', 'a.adj', 'sigma.mat', 'sigma.esp',
-    'tau.mat', 'tau.esp', 'p.mat.bound', 'p.esp.bound')
+    'tau.mat', 'tau.esp', 'p.mat.bound', 'p.esp.bound','a.pc','a.internet','a.lavadora','a.celular')
 
 jags.fit <- jags(model.file = './src/modelo_logit.model', 
     data = jags.data, inits = jags.inits, 
