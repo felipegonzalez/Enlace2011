@@ -61,9 +61,5 @@ jags.fit <- jags(model.file = './src/modelo_logit.model',
     data = jags.data, inits = jags.inits, 
     parameters.to.save = jags.params,
     n.chains = 2, n.burnin=1000, n.thin = 5, DIC = FALSE,
-    n.iter = 6000)
+    n.iter = 3000)
 
-medias.escuelas <- jags.fit$BUGSoutput$mean$p.bound  
-hist(medias.escuelas)
-plot(jags.fit)
-traceplot(jags.fit$BUGSoutput)
