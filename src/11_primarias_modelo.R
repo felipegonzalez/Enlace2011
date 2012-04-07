@@ -54,8 +54,8 @@ jags.inits <- function(){
 jags.data <- c('no.bueno.esp', 'no.bueno.mat', 'no.eval', 'no.escuelas', 'tipo', 'marg', 'n.marg',
     'n.tipo','pc.cent', 'internet.cent', 'lavadora.cent', 'celular.cent', 'estado', 'n.estados')
 
-jags.params <- c('a.marg.adj', 'a.tipo.adj', 'a.adj', 'sigma.mat', 'sigma.esp',
-    'tau.mat', 'tau.esp', 'p.mat.bound', 'p.esp.bound','a.pc','a.internet','a.estado')
+jags.params <- c('a.marg.adj', 'a.tipo.adj', 'a.estado.adj', 'a.adj', 'sigma.mat', 'sigma.esp',
+     'p.mat.bound', 'p.esp.bound', 'a.estado', 'sigma.estado')
 
 jags.fit <- jags(model.file = './src/modelo_logit.model', 
     data = jags.data, inits = jags.inits, 
