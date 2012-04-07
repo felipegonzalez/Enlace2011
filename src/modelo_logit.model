@@ -8,8 +8,7 @@ model {
 		logit(p.mat[i]) <- Xbeta.mat[i]
         Xbeta.esp[i] ~ dnorm(Xbeta.0[i], tau.esp)
 		Xbeta.mat[i] ~ dnorm(Xbeta.0[i], tau.mat)
-		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]] + a.pc*pc.cent[i] + a.internet*internet.cent[i] +
-			a.lavadora*lavadora.cent[i] + a.celular*celular.cent[i]
+		Xbeta.0[i] <- a.0 + a.tipo[tipo[i]] + a.marg[marg[i]] + a.estado[estado[i]]
 	}
 	a.adj <- a.0 + mean(a.tipo[]) + mean(a.marg[])
 	a.0 ~ dnorm(0, 0.0001)
@@ -31,9 +30,11 @@ model {
 	}
 	tau.marg <- pow(sigma.marg, -2)
 	sigma.marg ~ dunif(0.001, 1000)	
-	
-	a.pc ~ dnorm(0, 0.001)
-	a.internet ~ dnorm(0, 0.001)
-	a.lavadora ~ dnorm(0, 0.001)
-	a.celular ~ dnorm(0, 0.001)
+	for(e in 1:n.estados){
+		a.estado[e] ~ dnorm(0, tau.estado)
+		a.estado.adj[e] <- a.estado[e] - mean(a.estado[])
+	}
+	tau.estado <- pow(sigma.estado, -2)
+	sigma.estado ~ dunif(0.001, 1000)	
+
 }
