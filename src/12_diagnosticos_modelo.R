@@ -12,6 +12,7 @@ dev.off()
 medias.post <- jags.fit$BUGSoutput$mean
 comp.medias <- data.frame(español = medias.post$p.esp.bound,
         mate = medias.post$p.mat.bound)
+sd.post <- jags.fit$BUGSoutput$sd
 
 svg(file = './graphs/comp_mate_español_medias.svg')        
 ggplot(comp.medias, aes(x = español, y = mate)) + geom_point() +

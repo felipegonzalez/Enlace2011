@@ -5,7 +5,7 @@ load.project()
 #primarias.s <- primarias[ sample(1:nrow(primarias), 1000), ] 
 
 primarias.s <- subset(primarias, tot.primaria > 30 & TIPO_ESCUELA!="CONAFE")
-primarias.s <- primarias.s[sample(1:nrow(primarias.s), 5000),]
+#primarias.s <- primarias.s[sample(1:nrow(primarias.s), 5000),]
 
 no.escuelas <- nrow(primarias.s)
 no.bueno.esp <- primarias.s$no.bueno.esp
@@ -60,6 +60,6 @@ jags.params <- c('a.marg.adj', 'a.tipo.adj', 'a.estado.adj', 'a.adj', 'sigma.mat
 jags.fit <- jags(model.file = './src/modelo_logit.model', 
     data = jags.data, inits = jags.inits, 
     parameters.to.save = jags.params,
-    n.chains = 2, n.burnin=1000, n.thin = 5, DIC = FALSE,
-    n.iter = 3000)
+    n.chains = 1, n.burnin=1000, n.thin = 15, DIC = FALSE,
+    n.iter = 10000)
 

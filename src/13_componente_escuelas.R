@@ -20,3 +20,4 @@ primarias.s$p.mate <- comp.medias$mate
 
 primarias.ord <- arrange(primarias.s, (score))
 head(primarias.ord,20)
+
