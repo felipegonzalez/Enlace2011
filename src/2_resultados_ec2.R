@@ -1,7 +1,7 @@
 library(ProjectTemplate)
 library(ggplot2)
 library(plyr)
-load('./out/primarias_salida_Entrega_7abril.RData')
+load('./out/primarias_salida_7abril.RData')
 
 # ========================
 # = Algunos diagnósticos =
