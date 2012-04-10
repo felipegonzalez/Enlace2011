@@ -1,18 +1,35 @@
 library(ProjectTemplate)
-load.project()
+library(ggplot2)
+library(plyr)
+load('./out/primarias_s_Entrega_abril_7.RData')
+
+primarias.salida <- primarias.s.comp[ , c('CVE_ESCUELA', 'TURNO','ESCUELA','TIPO_ESCUELA','ENTIDAD','NOM_ENT.1',
+  'tipo','marginación','tot.primaria','no.bueno.esp','no.bueno.mate', 'score', 'p.español','p.mate')]
+
+save(primarias.salida, file='./out/primarias_salida_7abril.RData')
 
 
-nrow(primarias.s)
-nrow(primarias.s.2)
+# ========================
+# = Algunos diagnósticos =
+# ========================
+primarias.resumen <- ddply(primarias.salida, c('tipo', 'marginación','TURNO'), summarise,
+  num.esc = length(p.español),
+  media.esp = mean(p.español),
+  media.mate = mean(p.mate), 
+  sd.esp=sd(p.español)/sqrt(length(p.español)),
+  sd.mate = sd(p.mate)/sqrt(length(p.mate)))
 
-dim(sims.pbound.sample)
+primarias.resumen <- subset(primarias.resumen, num.esc > 5)
 
-sims.pbound.2 <- sims.pbound.sample[seq(1,390,2),]
-sims.m <- melt(sims.pbound.2)
+ggplot(primarias.resumen, aes(x=marginación, y=media.mate, ymax=media.mate+2*sd.mate, ymin=media.mate-2*sd.mate, 
+  colour=TURNO, group=TURNO)) + geom_linerange() + 
+  geom_point() + geom_line() + facet_wrap(~tipo)
 
-names(sims.m) <- c("rep", "id.escuela", "value")
 
-write.csv(sims.m, file = "./out/sims_m.csv")
-
-primarias.s$id.escuela <- 1:76081
-write.csv(primarias.s, file="./out/primarias_s.csv")
+ggplot(primarias.salida, aes(x=marginación, y= p.español, colour=tipo)) +
+  geom_boxplot(outlier.colour = 'gray') +  facet_wrap(~NOM_ENT.1)
+ggplot(primarias.salida, aes(x=marginación, y= p.mate, colour=tipo)) +
+  geom_boxplot(outlier.colour = 'gray') +  facet_wrap(~tipo)
+ggplot(primarias.salida, aes(x=marginación, y= score, colour=tipo)) +
+  geom_boxplot(outlier.colour = 'gray') + facet_wrap(~tipo)
+  
