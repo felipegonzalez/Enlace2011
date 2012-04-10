@@ -8,8 +8,16 @@ en la prueba enlace según modelo jerárquico.
 
 
 
-Instrucciones:
+## Instrucciones (generar modelo):
 
 1. La primera corrida es necesario correr 00\_prep_censo.R, 01\_checar_muncipios.R. Los objetos se guardan en cache y
 no es necesario volver a correr estos scripts.
 2. Para correr el modelo:  10\_primarias_datos_modelo.R seguido de 11\_primarias_modelo.R
+3. 13_componente_escuelas.R requiere la corrida de 1. y la base primarias.s creada en 1 y 2. Las salidas son
+los archivos en *out* primarias_salida_ y los archivos *_coef con los coeficientes del modelo
+                    
+## Salidas
+
+El archivo primarias_salida en *out* contiene las variables básicas de ranking y estimación encogida
+de proporción de bueno/excelente. score.quintil contiene el score relativo en quintiles. p.esp y p.mate
+son las estimaciones de proporción de buenos.
