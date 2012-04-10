@@ -8,10 +8,10 @@ load('./out/primarias_salida_7abril.RData')
 # ========================
 ## 
 primarias.resumen <- ddply(primarias.salida, c('tipo', 'marginación'), summarise,
-  num.esc = length(p.español),
-  media.esp = mean(p.español),
+  num.esc = length(p.esp),
+  media.esp = mean(p.esp),
   media.mate = mean(p.mate), 
-  sd.esp=sd(p.español)/sqrt(length(p.español)),
+  sd.esp=sd(p.esp)/sqrt(length(p.esp)),
   sd.mate = sd(p.mate)/sqrt(length(p.mate))
   )
 
