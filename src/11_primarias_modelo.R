@@ -55,7 +55,7 @@ jags.data <- c('no.bueno.esp', 'no.bueno.mat', 'no.eval', 'no.escuelas', 'tipo',
     'n.tipo','pc.cent', 'internet.cent', 'lavadora.cent', 'celular.cent', 'estado', 'n.estados')
 
 jags.params <- c('a.marg.adj', 'a.tipo.adj', 'a.estado.adj', 'a.adj', 'sigma.mat', 'sigma.esp',
-     'p.mat.bound', 'p.esp.bound', 'sigma.estado','Xbeta.0')
+     'p.mat.bound', 'p.esp.bound', 'sigma.estado','Xbeta.0', 'esp.aj')
 
 jags.fit <- jags(model.file = './src/modelo_logit.model', 
     data = jags.data, inits = jags.inits, 
