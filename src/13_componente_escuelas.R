@@ -45,6 +45,6 @@ primarias.salida$score <- score.1
 primarias.salida$score.quintil <- cut2(primarias.salida$score, g = 5)
 
 save(primarias.salida, file = './out/primarias_salida_7abril.RData')
-
+write.csv(primarias.salida, file = './out/primarias_salida_7abril.csv')
 
 
