@@ -46,3 +46,16 @@ ggplot(primarias.resumen.2, aes(x=marginación, fill=score.quintil, weight=prop.
 dev.off()
 
 
+### Coeficientes
+hist(jags.fit$BUGSoutput$mean$a.estado.adj[-20]) #Nota: Oaxaca sólo tiene unas cuantas escuelas - ignorar
+estados.coef <- data.frame(estado = names(table(primarias.salida$NOM_ENT.1)), 
+  coeficiente = jags.fit$BUGSoutput$mean$a.estado.adj[-20], 
+  coeficiente.sd = jags.fit$BUGSoutput$sd$a.estado.adj[-20])
+estados.coef.2 <- arrange(estados.coef, coeficiente)  # Nótese que el error es grande para estados
+
+#Sin embargo, las estimaciones de coeficientes de marginación y tipo tienen muy alta precisión:
+marginacion.coef <- data.frame(media = jags.fit$BUGSoutput$mean$a.marg.adj, sd = jags.fit$BUGSoutput$sd$a.marg.adj)
+tipo.coef <- data.frame(media = jags.fit$BUGSoutput$mean$a.tipo.adj, sd = jags.fit$BUGSoutput$sd$a.tipo.adj)
+write.csv(estados.coef.2, file = './out/estados_coef.csv')
+write.csv(marginacion.coef, file = './out/marginacion_coef.csv')
+write.csv(tipo.coef, file = './out/tipo_coef.csv')
